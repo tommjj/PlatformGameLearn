@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import levels.Levels;
 
 import utilz.LoadSave;
 import static utilz.LoadSave.getSpriteAtlas;
@@ -19,18 +20,22 @@ public class EnemyManager {
     public EnemyManager(Playing playing) {
         this.playing = playing;
         loadEnemyImg();
-        addEnemy();
     }
 
-    private void addEnemy() {
-        crabbies = LoadSave.GetCrabs();
+    public void loadEnemies(Levels levels) {
+        crabbies = levels.getCrabs();
     }
 
     public void update(int[][] lvlData, Player player) {
+        boolean isAnyActive = false;  
         for (Crabby c : crabbies) {
             if (c.isActive()) {
                 c.update(lvlData, player);
+                isAnyActive = true;
             }
+        }
+        if(!isAnyActive) {
+            playing.setLevelCompleted(true);
         }
     }
 

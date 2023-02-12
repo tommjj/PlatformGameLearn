@@ -4,6 +4,8 @@ import gamesatates.Gamestate;
 import gamesatates.Menu;
 import gamesatates.Playing;
 import java.awt.Graphics;
+import javafx.scene.layout.Background;
+import utilz.LoadSave;
 
 public class Game implements Runnable {
 
@@ -13,6 +15,7 @@ public class Game implements Runnable {
 
     private Playing playing;
     private Menu menu;
+    
 
     //final size
     public static final int TILES_DEFAULT_SIZE = 32;//Kích thước của một block
@@ -22,12 +25,15 @@ public class Game implements Runnable {
     public static final int TILES_SIZE = (int) (TILES_DEFAULT_SIZE * SCALE);
     public static final int GAME_WIDTH = TILES_SIZE * TILES_IN_WIDTH;
     public static final int GAME_HEIGHT = TILES_SIZE * TILES_IN_HEIGHT;
+    
+   
 
     public Game() {
-
         initClasses();
         gamePanel = new GamePanel(this);
         new GameWindow(gamePanel);
+        
+        gamePanel.setFocusable(true);
         gamePanel.requestFocus();
         startGameLoop();       
     }
@@ -45,13 +51,15 @@ public class Game implements Runnable {
         return menu;
     }
 
+    
+
     private void startGameLoop() {
         gameThread = new Thread(this);
         gameThread.start();
     }
 
     public void update() {
-
+        
         switch (Gamestate.state) {
             case MENU:
                 menu.update();
